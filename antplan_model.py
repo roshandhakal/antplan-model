@@ -18,15 +18,6 @@ def anticipatory_cost_fn(state):
     """
     total_cost = 0
     placements = {}
-    held_objects = set()
-
-    # Define fallback/original object locations (assumed known)
-    original_locations = {
-        "mug0": "table1",
-        "bottle0": "table2",
-        "bowl0": "cabinet1",
-        # Add more if needed
-    }
 
     # Pass 1: detect in(...) predicates for object placement
     for _, pred in state.items():
@@ -36,20 +27,8 @@ def anticipatory_cost_fn(state):
                 obj, loc = match.groups()
                 placements[obj] = loc
 
-    # Pass 2: detect holding(...) predicates
-    for _, pred in state.items():
-        if pred.startswith("Atom holding("):
-            match = re.match(r"Atom holding\([^,]+, ([^)]+)\)", pred)
-            if match:
-                held_objects.add(match.group(1))
-
     # Handle cost for objects with known placements
     for obj, loc in placements.items():
-        if obj in held_objects:
-            # Held object — use fallback/original location
-            loc = original_locations.get(obj, None)
-            if not loc:
-                continue  # unknown object, skip
         if obj.startswith("mug") and loc != "cabinet2":
             total_cost += 100
         elif obj.startswith("bowl") and loc != "cabinet1":
@@ -57,17 +36,5 @@ def anticipatory_cost_fn(state):
         elif obj.startswith("bottle") and loc != "cabinet3":
             total_cost += 100
 
-    # Handle held objects that are not in placements
-    for obj in held_objects:
-        if obj not in placements:
-            loc = original_locations.get(obj, None)
-            if not loc:
-                continue  # unknown, skip
-            if obj.startswith("mug") and loc != "cabinet2":
-                total_cost += 100
-            elif obj.startswith("bowl") and loc != "cabinet1":
-                total_cost += 100
-            elif obj.startswith("bottle") and loc != "cabinet3":
-                total_cost += 100
-
+  
     return total_cost
