@@ -12,4 +12,4 @@ def anticipatory_cost_fn(state):
     Returns:
         total_cost (int): Sum of placement costs.
     """
-    return 0
+    return 100
