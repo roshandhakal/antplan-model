@@ -30,11 +30,11 @@ def anticipatory_cost_fn(state):
     # Handle cost for objects with known placements
     for obj, loc in placements.items():
         if obj.startswith("mug") and loc != "cabinet2":
-            total_cost += 100
+            total_cost += 1000
         elif obj.startswith("bowl") and loc != "cabinet1":
-            total_cost += 100
+            total_cost += 1000
         elif obj.startswith("bottle") and loc != "cabinet3":
-            total_cost += 100
+            total_cost += 1000
 
   
     return total_cost
