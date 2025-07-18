@@ -35,6 +35,5 @@ def anticipatory_cost_fn(state):
             total_cost += 1000
         elif obj.startswith("bottle") and loc != "cabinet3":
             total_cost += 1000
-
   
     return total_cost
